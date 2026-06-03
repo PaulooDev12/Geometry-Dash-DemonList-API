@@ -6,6 +6,8 @@ import com.gdlist.gd.Model.LevelModel;
 import com.gdlist.gd.Service.GdListService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +29,13 @@ public class LevelController {
     @GetMapping("/main")
     public ResponseEntity<List<ResponseDto>> findAllByOrderByPositionAsc() {
         return ResponseEntity.ok().body(service.findAllByOrderByPositionAsc());
+    }
+    @GetMapping("/mainlist")
+    public ResponseEntity<Page<ResponseDto>> listar(Pageable pageable) {
+        return ResponseEntity.ok(service.listar(pageable));
+    }
+    @PostMapping("/lote")
+    public ResponseEntity<List<ResponseDto>> lote(@Valid @RequestBody List<AdminReqDto> dto) {
+        return ResponseEntity.ok(service.salvarLista(dto));
     }
 }

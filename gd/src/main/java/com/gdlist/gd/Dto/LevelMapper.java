@@ -2,8 +2,6 @@ package com.gdlist.gd.Dto;
 
 import com.gdlist.gd.Model.LevelModel;
 
-import java.util.logging.Level;
-
 public class LevelMapper {
     public static ResponseDto levelToLevelDto(LevelModel level) {
         return new ResponseDto(
@@ -13,5 +11,15 @@ public class LevelMapper {
                 level.getPosition(),
                 level.getVideo()
         );
+    }
+
+    public static LevelModel levelToEntity(AdminReqDto dto){
+        LevelModel level = new LevelModel();
+        level.setName(dto.name());
+        level.setDescription(dto.description());
+        level.setImage(dto.image());
+        level.setPosition(dto.position());
+        level.setVideo(dto.video());
+        return level;
     }
 }
