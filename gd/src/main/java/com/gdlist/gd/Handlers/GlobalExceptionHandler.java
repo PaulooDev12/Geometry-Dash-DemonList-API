@@ -1,10 +1,13 @@
 package com.gdlist.gd.Handlers;
 
+import com.gdlist.gd.Dto.ErrorResponse;
 import com.gdlist.gd.Exception.BadRequestException;
+import com.gdlist.gd.Exception.InternalErrorException;
 import com.gdlist.gd.Exception.LevelAlredyExists;
 import com.gdlist.gd.Exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -12,15 +15,34 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(LevelAlredyExists.class)
-    public ResponseEntity<String> handleNotFound(LevelAlredyExists ex) {
-       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleConflict(LevelAlredyExists ex) {
+        ErrorResponse response = new ErrorResponse(409, ex.getMessage(), "Não é possivel salvar um level em uma posição já existente");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
+        ErrorResponse response = new ErrorResponse(404, ex.getMessage(), "Recurso nao encontrado / resource not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<String> handleBadRequest(BadRequestException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult()
+                .getFieldError()
+                .getDefaultMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ErrorResponse(
+                        400,
+                        message,
+                        "Erro na requisicão confira as validações e tente novamente")
+        );
+
+        }
+    @ExceptionHandler(InternalErrorException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(InternalErrorException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                new ErrorResponse(500, "Erro interno",
+                        "Error interno, confira sua requisição se estiver correta espere a volta do servidor")
+        );
     }
-}
+    }
