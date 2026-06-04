@@ -1,11 +1,11 @@
 package com.gdlist.gd.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.UUID;
 
 @Entity
+@Table(name="levels")
 public class LevelModel {
     private String name;
     private String description;
@@ -57,4 +57,8 @@ public class LevelModel {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    public String getId() {
+        return id;
+    }
 }

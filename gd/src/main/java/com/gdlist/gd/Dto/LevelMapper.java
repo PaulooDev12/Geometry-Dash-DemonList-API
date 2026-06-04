@@ -22,4 +22,14 @@ public class LevelMapper {
         level.setVideo(dto.video());
         return level;
     }
+    public static AdminResponse MapperToAdmin(LevelModel level) {
+        return new AdminResponse(
+                level.getName(),
+                level.getDescription(),
+                level.getPosition(),
+                level.getImage(),
+                level.getVideo(),
+                level.getId()
+        );
+    }
 }

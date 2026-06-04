@@ -1,6 +1,7 @@
 package com.gdlist.gd.Service;
 
 import com.gdlist.gd.Dto.AdminReqDto;
+import com.gdlist.gd.Dto.AdminResponse;
 import com.gdlist.gd.Dto.LevelMapper;
 import com.gdlist.gd.Dto.ResponseDto;
 import com.gdlist.gd.Exception.BadRequestException;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Level;
 
 @Service
 public class GdListService {
@@ -60,5 +62,8 @@ public List<ResponseDto> salvarLista(List<AdminReqDto> dto) {
         return savedLevels.stream()
                 .map(LevelMapper::levelToLevelDto)
                 .toList();
+}
+public Page<AdminResponse> listarAdmin(Pageable pageable) {
+        return levelRepo.findAll(pageable).map(LevelMapper::MapperToAdmin);
 }
 }

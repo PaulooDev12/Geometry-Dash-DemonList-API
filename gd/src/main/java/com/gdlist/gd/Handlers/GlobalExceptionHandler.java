@@ -1,8 +1,6 @@
 package com.gdlist.gd.Handlers;
 
 import com.gdlist.gd.Dto.ErrorResponse;
-import com.gdlist.gd.Exception.BadRequestException;
-import com.gdlist.gd.Exception.InternalErrorException;
 import com.gdlist.gd.Exception.LevelAlredyExists;
 import com.gdlist.gd.Exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -38,11 +36,4 @@ public class GlobalExceptionHandler {
         );
 
         }
-    @ExceptionHandler(InternalErrorException.class)
-    public ResponseEntity<ErrorResponse> handleInternalServerError(InternalErrorException ex){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErrorResponse(500, "Erro interno",
-                        "Error interno, confira sua requisição se estiver correta espere a volta do servidor")
-        );
-    }
     }

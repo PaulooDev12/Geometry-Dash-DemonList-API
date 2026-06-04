@@ -1,30 +1,31 @@
 package com.gdlist.gd.Dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 
 public record AdminReqDto(
-        @NotNull
+        @NotNull(message = "Valores nulos não são permitidos")
         @NotBlank
         String name,
 
-        @NotNull
+        @NotNull(message = "Valores nulos não são permitidos")
         @NotBlank
         String description,
 
         @Min(1)
+        @Max(250)
         Integer position,
 
-        @NotNull
+        @NotNull(message = "Valores nulos não são permitidos")
         @NotBlank
-        @URL
+        @URL(message = "URL inválida")
+        @Pattern(regexp = "^(?:http|https)://.*$")
         String image,
 
 
-        @NotNull
+        @NotNull(message = "Valores nulos não são permitidos")
         @NotBlank
-        @URL
+        @URL(message = "URL inválida")
+        @Pattern(regexp = "^(?:http|https)://.*$")
         String video) {
 }
