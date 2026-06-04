@@ -8,14 +8,11 @@ import com.gdlist.gd.Exception.BadRequestException;
 import com.gdlist.gd.Exception.LevelAlredyExists;
 import com.gdlist.gd.ListRepository.LevelsRepository;
 import com.gdlist.gd.Model.LevelModel;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.logging.Level;
 
 @Service
 public class GdListService {
@@ -63,7 +60,10 @@ public List<ResponseDto> salvarLista(List<AdminReqDto> dto) {
                 .map(LevelMapper::levelToLevelDto)
                 .toList();
 }
-public Page<AdminResponse> listarAdmin(Pageable pageable) {
-        return levelRepo.findAll(pageable).map(LevelMapper::MapperToAdmin);
+public List<AdminResponse> listarAdmin() {
+        List<LevelModel> levels = levelRepo.findAllByOrderByPositionAsc();
+        return levels.stream()
+                .map(LevelMapper::MapperToAdmin)
+                .toList();
 }
 }
