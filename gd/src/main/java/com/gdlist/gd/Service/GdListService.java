@@ -90,7 +90,7 @@ public void deleteById(String id) {
         LevelModel level =  levelRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("level not found"));
         Integer position = level.getPosition();
         List<LevelModel> levels = levelRepo.findAll().stream()
-                .filter(l -> l.getPosition() >= position)
+            .filter(l -> !l.getId().equals(level.getId()) && l.getPosition() >= position)
                 .toList();
         levels.forEach(l -> l.setPosition(l.getPosition() - 1));
         levelRepo.delete(level);
