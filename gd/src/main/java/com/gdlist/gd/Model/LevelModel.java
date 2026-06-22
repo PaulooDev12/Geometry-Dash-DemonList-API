@@ -10,6 +10,7 @@ public class LevelModel {
     private String name;
     private String description;
     private Integer position;
+
     private String video;
 
     public String getImage() {
